@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duygu Tahmini Uygulaması</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e3f2fd; 
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #recordButton {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #recordButton:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Duygu Tahmini Uygulaması</h1>
+        <button id="recordButton">Kayıt ve Tahmin Et</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("recordButton").addEventListener("click", function() {
+            fetch('/predict', {method: 'POST'})
+                .then(response => response.json())  
+                .then(data => {
+                    // Duygu tahmini sonuçları
+                    var emotions = ["Kızgın", "Sakin", "Mutlu", "Üzgün"];
+                    var resultText = "";
+                    for (var i = 0; i < emotions.length; i++) {
+                        resultText += emotions[i] + ": " + (data[i] * 100).toFixed(2) + "%<br>";
+                    }
+                    document.getElementById("result").innerHTML = resultText;
+                });
+        });
+    </script>
+    
+</body>
+</html>
